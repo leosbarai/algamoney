@@ -29,7 +29,7 @@ public class PessoaResource {
         return pessoaRepository.findAll();
     }
 
-    @GetMapping("/codigo")
+    @GetMapping("/{codigo}")
     public ResponseEntity<Pessoa> buscarPeloCodigo(@PathVariable Long codigo) {
         Optional<Pessoa> pessoa = this.pessoaRepository.findById(codigo);
         return pessoa.isPresent() ? ResponseEntity.ok(pessoa.get()) : ResponseEntity.notFound().build();
@@ -40,6 +40,12 @@ public class PessoaResource {
         Pessoa pessoaSalva = pessoaRepository.save(pessoa);
         publisher.publishEvent(new RecursoCriadoEvent(this, response, pessoaSalva.getCodigo()));
         return ResponseEntity.status(HttpStatus.CREATED).body(pessoaSalva);
+    }
+
+    @DeleteMapping("/{codigo}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void remover(@PathVariable Long codigo) {
+        pessoaRepository.deleteById(codigo);
     }
 
 }
