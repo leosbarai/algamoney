@@ -44,5 +44,4 @@ public class CategoriaResource {
         return categoria.isPresent() ? ResponseEntity.ok(categoria.get()) : ResponseEntity.notFound().build();
     }
 
-
 }
